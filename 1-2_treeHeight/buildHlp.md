@@ -11,11 +11,11 @@ java -Xmx1024m tree_height
 
 Compute and output the height of a rooted tree; not necessarily a binary tree.
 
-Constraints: 1 ??? n ??? 10^5
+Constraints: 1 <= n <= 10^5
 
 Input:  
   Line 1: Number of nodes
-  Line 2: Integer numbers from ???1 to (n - 1), parents of nodes.
+  Line 2: Integer numbers from -1 to (n - 1) parents of nodes.
 
 Output: Height of the tree.
 
@@ -62,11 +62,33 @@ Input:
 Output: 4
 
 ---
+
 Case 3
 
 Input: 
+5
+-1 0 1 2 3
 
-Output:
+Output: 5
+
+---
+
+Input:
+10
+9 7 5 5 2 9 9 9 2 -1
+
+Output: 4
+
+9 7 5 5 2 9 9 9 2 -1
+0 1 2 3 4 5 6 7 8  9
+
+------9-----
+|   |    | |
+0  -5-   6 7
+  |   |    |
+ -2-  3    1
+ | |
+ 4 8
 
 </pre>
 
