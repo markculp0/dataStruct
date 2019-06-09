@@ -3,10 +3,9 @@
 
 # Build Help
 
-javac -encoding UTF-8 BuildHeap.java
+javac -encoding UTF-8 BuildHeapStressTest.java
 
-java -Xmx1024m BuildHeap
-
+java -Xmx1024m BuildHeapStressTest
 
 ***
 

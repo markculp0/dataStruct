@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
 
-public class BuildHeap {
+public class BuildHeapStressTest {
 	
 	private int size;
     private int[] data;
@@ -13,10 +13,9 @@ public class BuildHeap {
     private FastScanner in;
     private PrintWriter out;
     
-
     // Main function
     public static void main(String[] args) throws IOException {
-        new BuildHeap().solve();
+        new BuildHeapStressTest().solve();
     } // end main
     
 
@@ -99,28 +98,9 @@ public class BuildHeap {
       
       // System.out.println(halfSz);            
       
-      /* Old Selection Sort
-      // The following naive implementation just sorts 
-      // the given sequence using selection sort algorithm
-      // and saves the resulting sequence of swaps.
-      // This turns the given array into a heap, 
-      // but in the worst case gives a quadratic number of swaps.
-      //
-      // TODO: replace by a more efficient implementation
-      for (int i = 0; i < data.length; ++i) {
-        for (int j = i + 1; j < data.length; ++j) {
-          if (data[i] > data[j]) {
-            swaps.add(new Swap(i, j));
-            int tmp = data[i];
-            data[i] = data[j];
-            data[j] = tmp;
-          } // end if
-        } // end inner for
-      } // end outer for     
-      
-      */
       
     } // end generateSwaps
+    
 
     
     // solve function
@@ -128,7 +108,26 @@ public class BuildHeap {
         in = new FastScanner();
         out = new PrintWriter(new BufferedOutputStream(System.out));
         readData();
-        generateSwaps();
+        
+        /*
+        // Generate random input
+        int n = (int)(Math.random() * 10) + 1;                
+        data = new int[n];
+        for (int i = 0; i < n; ++i) {
+          data[i] = (int)(Math.random() * 100) + 1;
+        }        
+        */
+        
+        generateSwaps();        
+        
+        /*
+        // Print Binary Heap Tree
+        for (int i = 0; i < n; ++i) {
+        	System.out.print(data[i] + " ");
+        }
+        System.out.print("\n");
+        */
+         
         writeResponse();
         out.close();
     }  // end solve
@@ -171,8 +170,5 @@ public class BuildHeap {
     
     
 } // end BuildHeap class
-
-
-
 
 
