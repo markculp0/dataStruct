@@ -55,9 +55,13 @@ public class BuildHeapStressTest {
     	int minIndex = i;
     	
     	// Compare left child
-    	int left = leftChild(i);    	
-    	if ((left <= size) && (data[left] < data[minIndex]))
-    		minIndex = left;
+    	if (leftChild(i) < size) {
+    		
+    		int left = leftChild(i);    	
+    		if ((left <= size) && (data[left] < data[minIndex]))
+    			minIndex = left;
+    	}
+    	
     	
     	// Compare right child    	
     	if (rightChild(i) < size) {
@@ -101,35 +105,66 @@ public class BuildHeapStressTest {
       
     } // end generateSwaps
     
-
     
     // solve function
     public void solve() throws IOException {
-        in = new FastScanner();
+        // in = new FastScanner();
         out = new PrintWriter(new BufferedOutputStream(System.out));
-        readData();
+        // readData();
         
-        /*
+        while(true) {
+        
         // Generate random input
-        int n = (int)(Math.random() * 10) + 1;                
+        int n = (int)(Math.random() * 6) + 1;                
         data = new int[n];
         for (int i = 0; i < n; ++i) {
-          data[i] = (int)(Math.random() * 100) + 1;
+          data[i] = (int)(Math.random() * 10) + 1;
         }        
-        */
         
-        generateSwaps();        
         
-        /*
-        // Print Binary Heap Tree
+        // Print input 
+        System.out.print("input: ");
         for (int i = 0; i < n; ++i) {
+        	
+        	
         	System.out.print(data[i] + " ");
         }
         System.out.print("\n");
-        */
+        
+        generateSwaps();        
+        
+       
+        // Print Binary Heap Tree
+        System.out.print("heap: ");
+        for (int i = 0; i < n; ++i) {
+        	        	
+        	System.out.print(data[i] + " ");
+        	
+        	// test left child
+        	if (leftChild(i) < size) {
+        		if (data[leftChild(i)] < data[i]) {
+        			break;
+        		}
+        	} // end if
+        	
+        	// test right child
+        	if (rightChild(i) < size) {
+        		if (data[rightChild(i)] < data[i]) {
+        			break;
+        		}
+        	} // end if
+        	
+        	
+        }
+        System.out.print("\n");
+        
+        } // end while
+        
          
-        writeResponse();
-        out.close();
+        // writeResponse();
+        // out.close();
+        
+        
     }  // end solve
 
     

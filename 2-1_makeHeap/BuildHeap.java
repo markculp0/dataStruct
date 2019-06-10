@@ -56,9 +56,12 @@ public class BuildHeap {
     	int minIndex = i;
     	
     	// Compare left child
-    	int left = leftChild(i);    	
-    	if ((left <= size) && (data[left] < data[minIndex]))
-    		minIndex = left;
+    	if (leftChild(i) < size) {
+    		
+    		int left = leftChild(i);    	
+    		if ((left <= size) && (data[left] < data[minIndex]))
+    			minIndex = left;
+    	}    	
     	
     	// Compare right child    	
     	if (rightChild(i) < size) {
