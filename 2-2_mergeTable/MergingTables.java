@@ -6,19 +6,25 @@ import java.util.StringTokenizer;
 public class MergingTables {
     private final InputReader reader;
     private final OutputWriter writer;
+    
 
     public MergingTables(InputReader reader, OutputWriter writer) {
         this.reader = reader;
         this.writer = writer;
     }
-
+    
+    
+    // Main function
     public static void main(String[] args) {
         InputReader reader = new InputReader(System.in);
         OutputWriter writer = new OutputWriter(System.out);
         new MergingTables(reader, writer).run();
         writer.writer.flush();
-    }
-
+    }  // end Main
+    
+    
+    
+    // Table class
     class Table {
         Table parent;
         int rank;
@@ -28,44 +34,111 @@ public class MergingTables {
             this.numberOfRows = numberOfRows;
             rank = 0;
             parent = this;
+        } //  end Table
+                
+        // Get Rows
+        int getRows() {
+        	return numberOfRows;
+        } // end getRows
+        
+        // Add Rows
+        void addRows(int r) {
+        	numberOfRows = numberOfRows + r;
+        } // end addRows
+        
+        // Remove Rows
+        void removeRows() {
+        	numberOfRows = 0;
+        } // end removeRows
+        
+        // Get Rank
+        int getRank() {
+        	return rank;
+        }  // end getRank
+        
+        void incrRank() {
+        	rank = rank + 1;
         }
+                
+        // Get Paren
         Table getParent() {
-            // find super parent and compress path
+            // find super parent and compress path        	
+        	
             return parent;
         }
-    }
+    }  // end Table class
+    
 
+    
     int maximumNumberOfRows = -1;
+    
 
+    // Merge tables
     void merge(Table destination, Table source) {
         Table realDestination = destination.getParent();
         Table realSource = source.getParent();
         if (realDestination == realSource) {
             return;
         }
-        // merge two components here
+        
+        // Merge rows from src to dst
+        realDestination.addRows(realSource.getRows());
+        realSource.removeRows();
+        
+        // Increase dest rank
+        realDestination.incrRank();
+                
+        // debug 
+        writer.printf("Dst: Rows %d Rank %d | ", realDestination.getRows(), realDestination.getRank());
+        writer.printf("Src: Rows %d Rank %d ", realSource.getRows(), realSource.getRank());
+        
+                
+        
         // use rank heuristic
+        
+        
         // update maximumNumberOfRows
-    }
-
+        maximumNumberOfRows = Math.max(maximumNumberOfRows, realDestination.getRows());
+        
+        
+    }  // end merge
+    
+    
+    
+    // Run 
     public void run() {
         int n = reader.nextInt();
         int m = reader.nextInt();
+        int numberOfRows = 0;		// init 0
+        
         Table[] tables = new Table[n];
         for (int i = 0; i < n; i++) {
-            int numberOfRows = reader.nextInt();
+            numberOfRows = reader.nextInt();
             tables[i] = new Table(numberOfRows);
             maximumNumberOfRows = Math.max(maximumNumberOfRows, numberOfRows);
         }
+        
+        // Cycle thru merge operations
         for (int i = 0; i < m; i++) {
             int destination = reader.nextInt() - 1;
-            int source = reader.nextInt() - 1;
+            int source = reader.nextInt() - 1;                        
+            
             merge(tables[destination], tables[source]);
-            writer.printf("%d\n", maximumNumberOfRows);
+                                                
+            // debug
+            writer.printf(" | MaxRow%d: %d |", i, maximumNumberOfRows);
+            for (int j = 0; j < n; j++) {
+            	writer.printf("| t%d rw:%d rk:%d ", j + 1, tables[j].getRows(), tables[j].getRank());
+            }
+            writer.printf("\n");
+            
+            // Orig writer
+            // writer.printf("%d\n", maximumNumberOfRows);
         }
-    }
+    }  // end Run()
 
-
+    
+    // InputReader class
     static class InputReader {
         public BufferedReader reader;
         public StringTokenizer tokenizer;
@@ -97,8 +170,10 @@ public class MergingTables {
         public long nextLong() {
             return Long.parseLong(next());
         }
-    }
-
+    } // end InputReader class
+    
+    
+    // OutputWriter class
     static class OutputWriter {
         public PrintWriter writer;
 
@@ -109,5 +184,8 @@ public class MergingTables {
         public void printf(String format, Object... args) {
             writer.print(String.format(Locale.ENGLISH, format, args));
         }
-    }
-}
+    } // end OutputWriter class
+    
+    
+    
+}  // end MergingTables class
