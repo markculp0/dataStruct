@@ -28,21 +28,24 @@ public class MergingTables {
     class Table {
         Table parent;
         int rank;
-        int numberOfRows;
-
-        Table(int numberOfRows) {
+        long numberOfRows;
+        int tableNumber;
+        
+        // Table constructor
+        Table(int numberOfRows, int tableNumber) {
             this.numberOfRows = numberOfRows;
+            this.tableNumber = tableNumber;
             rank = 0;
             parent = this;
         } //  end Table
                 
         // Get Rows
-        int getRows() {
+        long getRows() {
         	return numberOfRows;
         } // end getRows
         
         // Add Rows
-        void addRows(int r) {
+        void addRows(long r) {
         	numberOfRows = numberOfRows + r;
         } // end addRows
         
@@ -59,39 +62,72 @@ public class MergingTables {
         void incrRank() {
         	rank = rank + 1;
         }
+        
+        // Get Table Number
+        int getTableNumber() {
+        	return tableNumber;
+        }
                 
-        // Get Paren
+        // Get Parent
         Table getParent() {
-            // find super parent and compress path        	
+            // find super parent and compress path    
         	
+        	if (parent.getTableNumber() != this.getTableNumber())
+        		parent = parent.getParent();
             return parent;
         }
+        
+        // Set Parent
+        void setParent(Table t) {
+        	parent = t;
+        }
+        
     }  // end Table class
     
 
     
-    int maximumNumberOfRows = -1;
+    long maximumNumberOfRows = -1;
     
 
     // Merge tables
     void merge(Table destination, Table source) {
+    	
         Table realDestination = destination.getParent();
+        /*
+        if(realDestination.getTableNumber() != destination.getTableNumber()) {
+        	while(realDestination.getTableNumber() != realDestination.getParent().getTableNumber()) {
+        		realDestination = realDestination.getParent();
+        	}
+        }
+        */
+        	        
         Table realSource = source.getParent();
+        /*
+        if(realSource.getTableNumber() != source.getTableNumber()) {
+        	while(realSource.getTableNumber() != realSource.getParent().getTableNumber()) {
+        		realSource = realSource.getParent();
+        	}
+        }
+        */
+        
         if (realDestination == realSource) {
             return;
         }
-        
+     
         // Merge rows from src to dst
         realDestination.addRows(realSource.getRows());
         realSource.removeRows();
         
         // Increase dest rank
         realDestination.incrRank();
-                
+        realSource.setParent(realDestination);
+        
+        
+        /*        
         // debug 
         writer.printf("Dst: Rows %d Rank %d | ", realDestination.getRows(), realDestination.getRank());
         writer.printf("Src: Rows %d Rank %d ", realSource.getRows(), realSource.getRank());
-        
+        */
                 
         
         // use rank heuristic
@@ -114,7 +150,7 @@ public class MergingTables {
         Table[] tables = new Table[n];
         for (int i = 0; i < n; i++) {
             numberOfRows = reader.nextInt();
-            tables[i] = new Table(numberOfRows);
+            tables[i] = new Table(numberOfRows, i + 1);
             maximumNumberOfRows = Math.max(maximumNumberOfRows, numberOfRows);
         }
         
@@ -124,16 +160,20 @@ public class MergingTables {
             int source = reader.nextInt() - 1;                        
             
             merge(tables[destination], tables[source]);
-                                                
+            
+            /*
             // debug
             writer.printf(" | MaxRow%d: %d |", i, maximumNumberOfRows);
             for (int j = 0; j < n; j++) {
-            	writer.printf("| t%d rw:%d rk:%d ", j + 1, tables[j].getRows(), tables[j].getRank());
+            	writer.printf("| t%d rw:%d rk:%d p:%d", j + 1, 
+            			tables[j].getRows(), tables[j].getRank(), 
+            			tables[j].getParent().getTableNumber());
             }
             writer.printf("\n");
+            */
             
             // Orig writer
-            // writer.printf("%d\n", maximumNumberOfRows);
+            writer.printf("%d\n", maximumNumberOfRows);
         }
     }  // end Run()
 
