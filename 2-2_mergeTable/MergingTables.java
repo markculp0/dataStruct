@@ -30,6 +30,7 @@ public class MergingTables {
         int rank;
         long numberOfRows;
         int tableNumber;
+       
         
         // Table constructor
         Table(int numberOfRows, int tableNumber) {
@@ -40,8 +41,8 @@ public class MergingTables {
         } //  end Table
                 
         // Get Rows
-        long getRows() {
-        	return numberOfRows;
+        long getRows() {        	
+        	return numberOfRows;        		      
         } // end getRows
         
         // Add Rows
@@ -84,56 +85,49 @@ public class MergingTables {
         
     }  // end Table class
     
-
     
     long maximumNumberOfRows = -1;
     
-
     // Merge tables
     void merge(Table destination, Table source) {
     	
         Table realDestination = destination.getParent();
-        /*
-        if(realDestination.getTableNumber() != destination.getTableNumber()) {
-        	while(realDestination.getTableNumber() != realDestination.getParent().getTableNumber()) {
-        		realDestination = realDestination.getParent();
-        	}
-        }
-        */
         	        
         Table realSource = source.getParent();
-        /*
-        if(realSource.getTableNumber() != source.getTableNumber()) {
-        	while(realSource.getTableNumber() != realSource.getParent().getTableNumber()) {
-        		realSource = realSource.getParent();
-        	}
-        }
-        */
         
         if (realDestination == realSource) {
-            return;
+            return;            
         }
-     
-        // Merge rows from src to dst
-        realDestination.addRows(realSource.getRows());
-        realSource.removeRows();
+                
         
-        // Increase dest rank
-        realDestination.incrRank();
-        realSource.setParent(realDestination);
-        
+    	// Hang shorter tree under taller: use rank heuristic        
+        if (realDestination.getRank() > realSource.getRank()) {
+        	// Follow instruction: src -> dst
+        	realDestination.addRows(realSource.getRows());
+        	realSource.removeRows();
+        	realSource.setParent(realDestination);  
+        	
+        } else {
+        	// Switch order: dst -> src
+        	realSource.addRows(realDestination.getRows());
+        	realDestination.removeRows();
+        	realDestination.setParent(realSource);
+        	
+        	if (realDestination.getRank() == realSource.getRank()) {
+        		realSource.incrRank();
+        	}       	
+        }
+                                                   
         
         /*        
         // debug 
         writer.printf("Dst: Rows %d Rank %d | ", realDestination.getRows(), realDestination.getRank());
         writer.printf("Src: Rows %d Rank %d ", realSource.getRows(), realSource.getRank());
         */
-                
-        
-        // use rank heuristic
-        
+                               
         
         // update maximumNumberOfRows
+        maximumNumberOfRows = Math.max(maximumNumberOfRows, realSource.getRows());
         maximumNumberOfRows = Math.max(maximumNumberOfRows, realDestination.getRows());
         
         
@@ -225,7 +219,5 @@ public class MergingTables {
             writer.print(String.format(Locale.ENGLISH, format, args));
         }
     } // end OutputWriter class
-    
-    
-    
+            
 }  // end MergingTables class

@@ -69,9 +69,17 @@ Output:
 Case 3
 
 Input: 
+4 3
+1 1 1 1
+2 1
+3 2
+1 4
 
 
 Output: 
+2
+3
+4
 
 
 ---
