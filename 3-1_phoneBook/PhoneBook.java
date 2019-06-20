@@ -15,7 +15,7 @@ public class PhoneBook {
 
     public static void main(String[] args) {
         new PhoneBook().processQueries();
-    }
+    }x
 
     private Query readQuery() {
         String type = in.next();
