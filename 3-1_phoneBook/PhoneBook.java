@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
+import java.util.Comparator;
+import java.util.Collections;
 
 public class PhoneBook {
 
@@ -13,9 +15,16 @@ public class PhoneBook {
     // Keep list of all existing (i.e. not deleted yet) contacts.
     private List<Contact> contacts = new ArrayList<>();
 
+    
+    Comparator<Contact> c = new Comparator<Contact>() {
+        public int compare(Contact u1, Contact u2) {
+          return u1.getNum().compareTo(u2.getNum());
+        }
+     };
+
     public static void main(String[] args) {
         new PhoneBook().processQueries();
-    }x
+    }
 
     private Query readQuery() {
         String type = in.next();
@@ -31,8 +40,11 @@ public class PhoneBook {
     private void writeResponse(String response) {
         System.out.println(response);
     }
+    
 
-
+    /* -------------------------------
+     *	Original processQuery function
+     * -------------------------------
     private void processQuery(Query query) {
         if (query.type.equals("add")) {
             // if we already have contact with such number,
@@ -62,12 +74,79 @@ public class PhoneBook {
                 }
             writeResponse(response);
         }
-    }
+    } // end old processQuery
+    */
+
+    
+    /* -------------------------
+     * New processQuery function 
+     * -------------------------
+    */ 
+    private void processQuery2(Query query) {
+        if (query.type.equals("add")) {
+            // if we already have contact with such number,
+            // we should rewrite contact's name
+        	
+                    
+        	// Check if empty
+        	if (contacts.isEmpty()) 
+        		contacts.add(new Contact(query.name, query.number));
+        	
+        	// Check if new number greater than last one
+        	else if (contacts.get(contacts.size() - 1).number < query.number) {
+        		contacts.add(new Contact(query.name, query.number));
+        	} else {
+        		    
+                for(int i = 0; i < contacts.size(); i++) {
+                	// Replace it
+                	if (contacts.get(i).number == query.number) {
+            			contacts.get(i).name = query.name;
+            			break;
+            		// Insert it
+                	} else if (contacts.get(i).number > query.number) {
+                		contacts.add(i, new Contact(query.name, query.number));
+                		break;
+                	// If reach end, append it
+                	} else if (i == contacts.size() - 1) {
+        			contacts.add(new Contact(query.name, query.number));
+                	}
+                                	
+                } // end for
+                
+        	}  // end else
+        	        	        	        	
+            
+        // Delete number
+        } else if (query.type.equals("del")) {
+        	      	        	        	
+        	int index = Collections.binarySearch(contacts, new Contact("", query.number), c );
+        	
+        	// Return match
+            if (index > -1) {            	
+            	contacts.remove(index);            	
+            }
+        	
+        // Find number
+        } else {
+        	
+        	String response = "not found";
+        	        	        	
+        	int index = Collections.binarySearch(contacts, new Contact("", query.number), c );
+        	
+        	// Return match
+            if (index > -1) {
+            	response = contacts.get(index).name;
+            }        	
+                        
+            writeResponse(response);
+        }
+    } // end processQuery2
+    
 
     public void processQueries() {
         int queryCount = in.nextInt();
         for (int i = 0; i < queryCount; ++i)
-            processQuery(readQuery());
+            processQuery2(readQuery());
     }
 
     static class Contact {
@@ -77,6 +156,10 @@ public class PhoneBook {
         public Contact(String name, int number) {
             this.name = name;
             this.number = number;
+        }
+        
+        Integer getNum() {
+        	return this.number;
         }
     }
 
@@ -94,6 +177,10 @@ public class PhoneBook {
         public Query(String type, int number) {
             this.type = type;
             this.number = number;
+        }
+        
+        Integer getNum() {
+        	return this.number;
         }
     }
 
