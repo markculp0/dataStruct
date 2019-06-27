@@ -94,10 +94,12 @@ check 1
 check 2
 
 Output: 
+
 no
 yes
 yes
 no
+
 add help
 
 ---

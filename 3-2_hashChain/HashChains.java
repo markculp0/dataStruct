@@ -11,7 +11,7 @@ public class HashChains {
     private PrintWriter out;
     
     // store all strings in one list
-    private List<String> elems;
+    private ArrayList<ArrayList<String>> elems;
     
     // For hash function
     private int bucketCount;
@@ -39,9 +39,11 @@ public class HashChains {
     	
         String type = in.next();
         
+        // add, del or find
         if (!type.equals("check")) {
             String s = in.next();
             return new Query(type, s);
+        // check    
         } else {
             int ind = in.nextInt();
             return new Query(type, ind);
@@ -59,22 +61,26 @@ public class HashChains {
     
     // processQuery method
     private void processQuery(Query query) {
+    	int index;
+    	
         switch (query.type) {
             case "add":
-                if (!elems.contains(query.s))
-                    elems.add(0, query.s);
+            	index = hashFunc(query.s);
+                if (!elems.get(index).contains(query.s))
+                    elems.get(index).add(0, query.s);
                 break;
             case "del":
-                if (elems.contains(query.s))
-                    elems.remove(query.s);
+            	index = hashFunc(query.s);
+                if (elems.get(index).contains(query.s))
+                    elems.get(index).remove(query.s);
                 break;
             case "find":
-                writeSearchResult(elems.contains(query.s));
+            	index = hashFunc(query.s);
+                writeSearchResult(elems.get(index).contains(query.s));
                 break;
             case "check":
-                for (String cur : elems)
-                    if (hashFunc(cur) == query.ind)
-                        out.print(cur + " ");
+            	for (int i = 0; i < elems.get(query.ind).size(); i++)
+            		out.print(elems.get(query.ind).get(i) + " ");
                 out.println();
                 // Uncomment the following if you want to play with the program interactively.
                 // out.flush();
@@ -88,25 +94,32 @@ public class HashChains {
     // processQueries method
     public void processQueries() throws IOException {
     	
-        elems = new ArrayList<>();
+        elems = new ArrayList<ArrayList<String>>();
         in = new FastScanner();
         out = new PrintWriter(new BufferedOutputStream(System.out));
+                       
+        bucketCount = in.nextInt();
         
+        // Create ArrayList of ArrayLists
+        for (int i = 0; i < bucketCount; i++) {
+        	ArrayList<String> chain = new ArrayList<String>();
+        	elems.add(chain);
+        }
+                
+        // Process queries
+        int queryCount = in.nextInt();
+        for (int i = 0; i < queryCount; ++i) {
+            processQuery(readQuery());
+        }
+                        
+        /*
         // Test hash function
         bucketCount = 5;
         String word = "world";
         int hash = hashFunc(word);
         out.println(hash);
-        
-        
-        /*
-        bucketCount = in.nextInt();
-        int queryCount = in.nextInt();
-        for (int i = 0; i < queryCount; ++i) {
-            processQuery(readQuery());
-        }
         */
-        
+                
         out.close();
     } // end processQueries
 
