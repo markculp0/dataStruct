@@ -9,24 +9,28 @@ java -Xmx1024m tree_orders
 
 ***
 
-Build and output a rooted binary tree in-order, pre-order and post-order traversals.
+Build and output a rooted binary tree with in-order, pre-order and post-order traversals.
 
-Constraints: 1 <= n <= 10^5
-             0 <= key <= 10^9
-            -1 <= left or right <= n - 1
+**Constraints:** 
 
-Input:  
-  Line 1: n = number of vertices
-  Line 2: n lines containing information 
+  *  1 <= n < 10^5
+  *  0 <= key <= 10^9
+  * -1 <= left or right <= n - 1
+
+**Input:**  
+
+  * Line 1: n = number of vertices
+  * Line 2: n lines containing information 
           about the vertices from 0 to n-1.
           Formatted 3 per line as: 
             key value | left index | right index
             ( 0 index = root | -1 index = no child )
 
-Output: 
-  Line 1: Keys from an in-order traversal
-  Line 2: Keys from an pre-order traversal
-  Line 3: Keys from an post-order traversal
+**Output:**
+
+  * Line 1: Keys from an in-order traversal
+  * Line 2: Keys from an pre-order traversal
+  * Line 3: Keys from an post-order traversal
 
 ***
 
