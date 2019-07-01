@@ -144,14 +144,33 @@ public class tree_orders {
 		} // end read
 		
 		
-    // In Order Traversal function --------------
+		// inOrderTravRecur function 
+		void inOrderTravRecur(Node<Integer> node) {
+			if (node == null)
+				return;
+						
+			inOrderTravRecur(node.getLeftPtr());
+			System.out.print(node.getKey() + " ");
+						
+			inOrderTravRecur(node.getRightPtr());
+		} // end inOrderTravRecur
+		
+		
+		// In Order Traversal function --------------
 		List<Integer> inOrder() {
 			ArrayList<Integer> result = new ArrayList<Integer>();
 			
+			
+			inOrderTravRecur(nodes.get(0));
+			
+			
+			/*
+			// debug: print nodes
 			for(int i = 0; i < nodes.size(); i++) {
 				System.out.print(nodes.get(i).getKey() + " ");
 			}
 			System.out.print("\n");
+			*/
 			
 			/*
 			// debug: print key input
@@ -172,13 +191,25 @@ public class tree_orders {
 			
 			return result;
 		} // end inOrder
+		
+		
+		// preOrderTravRecur function -----------
+		void preOrderTravRecur(Node<Integer> node) {
+			
+			if (node == null)
+				return;
+			
+			System.out.print(node.getKey() + " ");
+			preOrderTravRecur(node.getLeftPtr());
+			preOrderTravRecur(node.getRightPtr());			
+		} // end preOrderTravRecur
     
     
-    // Pre Order Traversal ----------------------
+		// Pre Order Traversal ------------------
 		List<Integer> preOrder() {
 			ArrayList<Integer> result = new ArrayList<Integer>();
-                        // Finish the implementation
-                        // You may need to add a new recursive method to do that
+            
+			preOrderTravRecur(nodes.get(0));
                         
 			return result;
 		} // end preOrder
