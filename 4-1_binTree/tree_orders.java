@@ -25,6 +25,7 @@ public class tree_orders {
 	  
 	  // nextInt function --------------------------
 		int nextInt() throws IOException {
+			
 			return Integer.parseInt(next());
 		}
 	} // end FastScanner class
@@ -73,8 +74,8 @@ public class tree_orders {
   // TreeOrders class ===========================
 	public class TreeOrders {
 		
-		int n;
-		int[] key, left, right;
+		 Integer n;
+		// int[] key, left, right;
 		
 		// Create ArrayList of Nodes
 		List<Node<Integer>> nodes;
@@ -84,15 +85,15 @@ public class tree_orders {
 		void read() throws IOException {
 			FastScanner in = new FastScanner();
 			
-			// Allocate ArrayList of Nodes
-			nodes = new ArrayList<>();
-			
 			// Get number of vertices
 			n = in.nextInt();
 			
+			// Allocate ArrayList of Nodes
+			nodes = new ArrayList<>(n);
+			
 			// Allocate nodes
 			for (int i = 0; i < n; i++) { 
-				Node<Integer> node = new Node<>();
+				Node<Integer> node = new Node<Integer>();
 				nodes.add(node); 
 			}
 						
@@ -109,6 +110,7 @@ public class tree_orders {
 				
 				// Set node key value
 				Node<Integer> node = nodes.get(i);
+				//int key = in.nextInt();
 				node.setKey(in.nextInt());
 				
 				// Set node left child ptr
@@ -117,7 +119,7 @@ public class tree_orders {
 					// Node<Integer> lNode = nodes.get(l);
 					node.setLeftPtr(nodes.get(l));
 				}
-				
+			
 				// Set node right child ptr
 				int r = in.nextInt();
 				if (r > -1) {
@@ -143,8 +145,8 @@ public class tree_orders {
 			
 		} // end read
 		
-		
-		// inOrderTravRecur function 
+				
+		// inOrderTravRecur function ------------
 		void inOrderTravRecur(Node<Integer> node) {
 			if (node == null)
 				return;
@@ -154,13 +156,14 @@ public class tree_orders {
 						
 			inOrderTravRecur(node.getRightPtr());
 		} // end inOrderTravRecur
+				
 		
 		
-		// In Order Traversal function --------------
+		// In Order Traversal function ----------
 		List<Integer> inOrder() {
 			ArrayList<Integer> result = new ArrayList<Integer>();
 			
-			
+			// Recursive inorder
 			inOrderTravRecur(nodes.get(0));
 			
 			
@@ -193,6 +196,8 @@ public class tree_orders {
 		} // end inOrder
 		
 		
+		
+		
 		// preOrderTravRecur function -----------
 		void preOrderTravRecur(Node<Integer> node) {
 			
@@ -203,23 +208,41 @@ public class tree_orders {
 			preOrderTravRecur(node.getLeftPtr());
 			preOrderTravRecur(node.getRightPtr());			
 		} // end preOrderTravRecur
-    
+		
+		
     
 		// Pre Order Traversal ------------------
 		List<Integer> preOrder() {
-			ArrayList<Integer> result = new ArrayList<Integer>();
+			ArrayList<Integer> result = new ArrayList<Integer>();						
             
+			// Recursive preorder
 			preOrderTravRecur(nodes.get(0));
                         
 			return result;
 		} // end preOrder
+		
+		
+		
+		// postOrderTravRecur function -----------
+		void postOrderTravRecur(Node<Integer> node) {
+					
+			if (node == null)
+				return;
+						
+			postOrderTravRecur(node.getLeftPtr());
+			postOrderTravRecur(node.getRightPtr());	
+			System.out.print(node.getKey() + " ");
+			
+		} // end preOrderTravRecur
+		
     
     
-    // Post Order Traversal ---------------------
+		// Post Order Traversal -----------------
 		List<Integer> postOrder() {
 			ArrayList<Integer> result = new ArrayList<Integer>();
-                        // Finish the implementation
-                        // You may need to add a new recursive method to do that
+			
+			// Recursive postorder
+			postOrderTravRecur(nodes.get(0));
                         
 			return result;
 		} // end postOrder function
