@@ -1,7 +1,10 @@
 import java.util.*;
 import java.io.*;
 
+// is_bst class
 public class is_bst {
+    
+    // FastScanner class ========================
     class FastScanner {
         StringTokenizer tok = new StringTokenizer("");
         BufferedReader in;
@@ -18,9 +21,14 @@ public class is_bst {
         int nextInt() throws IOException {
             return Integer.parseInt(next());
         }
-    }
-
+        
+    }  // end FastScanner class
+    
+    
+    // IsBST class ==============================
     public class IsBST {
+      
+        // Node class ===========================
         class Node {
             int key;
             int left;
@@ -31,11 +39,14 @@ public class is_bst {
                 this.right = right;
                 this.key = key;
             }
-        }
+        } // end Node class
+        
 
         int nodes;
         Node[] tree;
-
+        
+        
+        // Read method --------------------------
         void read() throws IOException {
             FastScanner in = new FastScanner();
             nodes = in.nextInt();
@@ -43,31 +54,50 @@ public class is_bst {
             for (int i = 0; i < nodes; i++) {
                 tree[i] = new Node(in.nextInt(), in.nextInt(), in.nextInt());
             }
-        }
-
+        } // end read
+        
+        
+        // isBinarySearchTree method ------------
         boolean isBinarySearchTree() {
           // Implement correct algorithm here
           return true;
-        }
-    }
+        } // end isBinarySearchTree
+        
+        
+    } // end IsBST class
+    
 
+    // Main method ------------------------------
     static public void main(String[] args) throws IOException {
+      
         new Thread(null, new Runnable() {
+          
             public void run() {
                 try {
+                  
                     new is_bst().run();
+                    
                 } catch (IOException e) {
+                  
                 }
-            }
+            }   // end run
         }, "1", 1 << 26).start();
-    }
+        
+    } // end main
+    
+    
+    // Run method -------------------------------
     public void run() throws IOException {
+      
         IsBST tree = new IsBST();
         tree.read();
+        
         if (tree.solve()) {
             System.out.println("CORRECT");
         } else {
             System.out.println("INCORRECT");
         }
-    }
-}
+    }  // end run
+    
+    
+} // end is_bst class
