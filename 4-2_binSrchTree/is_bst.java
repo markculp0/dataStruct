@@ -24,6 +24,8 @@ public class is_bst {
         
     }  // end FastScanner class
     
+
+    
     
     // IsBST class ==============================
     public class IsBST {
@@ -50,17 +52,68 @@ public class is_bst {
         void read() throws IOException {
             FastScanner in = new FastScanner();
             nodes = in.nextInt();
+            
+            if (nodes == 0) {
+            	System.out.println("CORRECT");
+            	System.exit(0);
+            }
+            
             tree = new Node[nodes];
+            
             for (int i = 0; i < nodes; i++) {
+            	
                 tree[i] = new Node(in.nextInt(), in.nextInt(), in.nextInt());
             }
         } // end read
         
         
+        // Recursive is it BST method
+        boolean bst(Node root, Node left, Node right) {
+        	
+        	// Check base case
+        	if (root == null || root.key == -1)
+        		return true;
+        	
+        	// Check if root key < left node's key
+        	if (left != null && left.key != -1 && root.key < left.key)
+        		return false;
+        	
+        	// Check if root key > right node's key
+        	if (right != null && right.key != -1 && root.key > right.key)
+        		return false;
+        	
+        	// Set left node
+        	Node treeLeft;
+        	if (root.left == -1)
+        		treeLeft = null;
+        	else 
+        		treeLeft = tree[root.left];
+        	
+        	// Set right node
+        	Node treeRight;
+        	if (root.right == -1)
+        		treeRight = null;
+        	else
+        		treeRight = tree[root.right];
+        	
+        	// Recurse through correct comparisons
+        	return bst(treeLeft, left, root) &&
+        			bst(treeRight, root, right);
+        }
+                
+        
         // isBinarySearchTree method ------------
         boolean isBinarySearchTree() {
-          // Implement correct algorithm here
-          return true;
+                      	                  	
+          /*	
+          // debug: print tree keys	
+          for (int i = 0; i < tree.length; i++) {
+        	  System.out.print(tree[i].key + " ");
+          }
+          System.out.print("\n");
+          */
+        	
+          return bst(tree[0], null, null);
         } // end isBinarySearchTree
         
         
@@ -92,7 +145,7 @@ public class is_bst {
         IsBST tree = new IsBST();
         tree.read();
         
-        if (tree.solve()) {
+        if (tree.isBinarySearchTree()) {
             System.out.println("CORRECT");
         } else {
             System.out.println("INCORRECT");
